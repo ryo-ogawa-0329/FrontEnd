@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        <script src="app.js" defer></script>
+    </head>
+    <body>
+        <h3>ファイルのアップロードして登録</h3>
+        <form action="upload.php" method="POST">
+            <div id="dropzone">
+                <p>ファイルをドラック&ドロップ<span>または</span>
+                    <button type="button" id="btnSel">ファイルを選択</button>
+                </p>
+                <p>Excelファイルのみ</p>
+                <input type="file" name="files[]" id="selectFile" accept="*.xlsx" multiple hidden>
+            </div>
+            <ul id="fileList"></ul>
+            <button id="btnReg" type="submit">登録</button>
+        </form>
+    </body>
+</html>
