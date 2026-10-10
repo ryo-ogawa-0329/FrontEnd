@@ -5,6 +5,15 @@ const inputAdd1 = document.getElementById("address1");
 const inputAdd2 = document.getElementById("address2");
 const select = document.getElementById("candidates");
 
+let list = [];
+select.addEventListener("change",(e)=>{
+            const i = e.target.selectedIndex;
+            inputAdd1.value = list[i]["address1"];
+            inputAdd2.value = list[i]["address2"] + list[i]["address3"];
+
+            select.hidden = true;
+        });
+
 async function getAddress(zipcode){
     const url = API_URL + zipcode;
     try{
@@ -31,8 +40,8 @@ inputZip.addEventListener("keydown", async (e)=>{
     
     const result = await getAddress(zipcode);
     if(!result)return;
-    const list = result.results;
-    
+
+    list = result.results;
     if(list === null){
         inputZip.focus();
         inputZip.select();
@@ -41,14 +50,7 @@ inputZip.addEventListener("keydown", async (e)=>{
         inputAdd1.value = list[0]["address1"];
         inputAdd2.value = list[0]["address2"] + list[0]["address3"];
     }else{                
-        select.innerHTML = "";
-        select.addEventListener("change",(e)=>{
-            const i = e.target.selectedIndex;
-            inputAdd1.value = list[i]["address1"];
-            inputAdd2.value = list[i]["address2"] + list[i]["address3"];
-
-            select.hidden = true;
-        });
+        select.innerHTML = "";        
         select.hidden = false;
         list.forEach((item,i)=>{
             const option = document.createElement("option");
