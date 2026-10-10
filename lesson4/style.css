@@ -1,0 +1,67 @@
+:root{
+
+}
+
+*,*::before,*::after{
+    box-sizing: border-box;
+    
+}
+
+body{
+    margin: 0px 12px;
+    font-family: sans-serif;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 480px;
+}
+
+label,
+input,
+button{
+    font: inherit;
+}
+
+label{
+  display: grid;
+  grid-template-columns: 6em 1fr 6em;
+  align-items: center;
+  gap: 8px;
+}
+input{
+    width: 100%;
+    padding: 6px 8px;
+}
+
+span.zip-wrap{
+    position: relative;
+}
+#candidates{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #fff;
+}
+#btnSubmit{
+    background-color: transparent;
+    color: #0c65f5;
+    border: none;
+    border-radius: 6px;
+}
+
+#btnSubmit:hover{
+    background-color: #e1e3e6;
+}
+button{
+    cursor: pointer;
+}
+.actions{
+    display: flex;
+    justify-content: flex-end;
+    height: 50px;
+}

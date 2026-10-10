@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>郵便番号API</title>
+        <script src="app.js" defer></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>郵便番号から住所を取得できます</h1>
+        <form action="test.php" method="POST">
+            <label>
+                <span class="label-text">郵便番号</span>
+                <span class="zip-wrap">
+                    <input type="text" id="zipCode" class="" value="" maxlength="8">
+                    <select id="candidates" size="5" hidden></select>
+                </span>
+            </label>
+            <label>
+                <span class="label-text">住所1</span>
+                <input type="text" id="address1" class="">
+            </label>
+            <label>
+                <span class="label-text">住所2</span>
+                <input type="text" id="address2" class="">
+            </label>
+            <div class="actions">
+                <button id="btnSubmit" type="button">送信</button>
+            </div>
+        </form>
+    </body>
+</html>
