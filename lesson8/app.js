@@ -3,6 +3,7 @@ const date_to = document.getElementById("date-to");
 const btnSave = document.getElementById("btnSave");
 const btnAdd = document.getElementById("btnAdd");
 const btnDel = document.getElementById("menuDelete");
+const btnCopy = document.getElementById("menuCopy");
 const container = document.querySelector(".container");
 let currentItem = null;
 let currentDiv = null;
@@ -97,6 +98,15 @@ btnDel.addEventListener("click",(e)=>{
     todoList.splice(index,1);
     save();
     currentDiv.remove();
+    menu.hidden = false;
+});
+
+btnCopy.addEventListener("click",(e)=>{
+    // オブジェクトが複製されるので、idを上書き
+    const newItem = {...currentItem, id: createId()};
+    todoList.push(newItem);
+    save();
+    render(newItem);
     menu.hidden = false;
 });
 
