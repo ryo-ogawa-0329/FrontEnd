@@ -16,16 +16,17 @@
                         <input type="date" id="date-fr" required>
                         <span>~</span>
                         <input type="date" id="date-to" required>
+                        <button id="btnSave">保存</button>
+                        <button type="button" id="btnAdd">追加</button>
                     </div>
                     <button type="button" id="btnShow">照会</button>
+                    
                 </div>
             </header>
             <div class="container">
-                <div class="todo-item">
-                    <span class="handle">::</span>
-                    <input type="checkbox">
-                    <div class="content" contenteditable="true"></div>
-                </div>
+              <div id="menu" class="menu" hidden>
+                <button type="button" id="menuDelete">削除</button>
+              </div>
             </div>
         </main>
         <script src="app.js"></script>
