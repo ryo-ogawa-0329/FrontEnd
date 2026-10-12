@@ -1,0 +1,47 @@
+:root{
+   --primary: #6366f1;
+   --primary-soft: #e6f4f2; 
+}
+
+*,*::before,*::after{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0px;
+    font-family: sans-serif;
+    padding: 0 8px;
+}
+
+.head-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+#btnShow{
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    color: var(--primary-soft);
+    background: var(--primary);
+    cursor:pointer;
+}
+#btnShow:hover{
+    opacity: 0.7;
+}
+
+.todo-item{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.handle{
+    opacity: 0;
+    cursor: grab;
+    color: #aaa;
+}
+
+.todo-item:hover .handle{
+    opacity: 1;
+}
