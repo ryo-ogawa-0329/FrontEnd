@@ -5,8 +5,11 @@ const btnAdd = document.getElementById("btnAdd");
 const btnDel = document.getElementById("menuDelete");
 const btnCopy = document.getElementById("menuCopy");
 const container = document.querySelector(".container");
+const menu = document.getElementById("menu");
+
 let currentItem = null;
 let currentDiv = null;
+let dragDiv = null;
 
 function getToday(format = false){
     const date = new Date();
@@ -22,15 +25,34 @@ function getToday(format = false){
 
 date_fr.value = getToday();
 date_to.value = getToday();
-                
+
 function render(item){
     const div = document.createElement("div");
     div.classList.add("todo-item");
     div.classList.add(item.status);
+    // データを参照できるように
+    div.dataset.id = item.id;
+    div.addEventListener("drop",(e)=>{
+        // drop先の短径領域を取得
+        const rect = div.getBoundingClientRect();
+        const centerY = rect.top + rect.height / 2;
+        if(e.clientY <= centerY){
+            div.before(dragDiv);
+            //console.log("before");
+        }else{
+            div.after(dragDiv);
+            //console.log("after");
+        }
+        updateOrder();
+    });
+    div.addEventListener("dragover",(e)=>{
+        e.preventDefault();
+    });
     // ::
     const span = document.createElement("span");
     span.classList.add("handle");
     span.textContent = "::";
+    span.draggable = true;
     span.addEventListener("click",(e)=>{
         e.stopPropagation();
         currentItem = item;
@@ -40,17 +62,17 @@ function render(item){
         menu.style.top = rect.bottom + window.scrollY + "px";
         menu.hidden = false;
     });
-
+    span.addEventListener("dragstart",(e)=>{
+        dragDiv = div;
+    });
+    // CheckBox
     const input = document.createElement("input");
     input.type = "checkbox";
+    input.checked = item.status === "finished";
     input.addEventListener("change",(e)=>{
-        edit.classList.toggle("finished");
-        if(edit.classList.contains("finished")){
-            item.status = "finished";
-        }else{
-            item.status = "unfinished";
-        }
+        item.status = input.checked ? "finished" : "unfinidhed";
         save();
+        renderAll();
     });
     const edit = document.createElement("div");
     edit.classList.add("content");
@@ -68,9 +90,19 @@ function render(item){
     container.appendChild(div);
 }
 
-// 配列を取得
 const todoList = JSON.parse(localStorage.getItem("todoList")) ?? [];
-todoList.forEach(item => render(item));
+
+// 配列を取得
+function renderAll(){
+    container.innerHTML = "";
+    const FinishedList = todoList.filter((item)=>item.status==="finished")
+                                 .sort((a,b)=>a.order-b.order);
+    const UnFinishedList = todoList.filter((item)=>item.status==="unfinished")
+                                   .sort((a,b)=>a.order-b.order);
+
+    const sortedList = [...UnFinishedList,...FinishedList];
+    sortedList.forEach(item => render(item));
+}
 
 function save(){
     localStorage.setItem("todoList",JSON.stringify(todoList));
@@ -78,10 +110,14 @@ function save(){
 
 btnAdd.addEventListener('click',(e)=>{
     console.log(createId());
-    const item = {id: createId(),date: getToday(), todo: "", status: "unfinished"};
+    const item = {id: createId(),
+                  date: getToday(), 
+                  todo: "", 
+                  status: "unfinished",
+                  order: todoList.length+1};
     todoList.push(item);
     save();
-    render(item);
+    renderAll();
 });
 
 btnSave.addEventListener('click',(e)=>{
@@ -96,18 +132,18 @@ btnSave.addEventListener('click',(e)=>{
 btnDel.addEventListener("click",(e)=>{
     const index = todoList.indexOf(currentItem);
     todoList.splice(index,1);
-    save();
     currentDiv.remove();
-    menu.hidden = false;
+    updateOrder();
+    menu.hidden = true;
 });
 
 btnCopy.addEventListener("click",(e)=>{
     // オブジェクトが複製されるので、idを上書き
-    const newItem = {...currentItem, id: createId()};
+    const newItem = {...currentItem, id: createId(), order: todoList.length+1};
     todoList.push(newItem);
     save();
-    render(newItem);
-    menu.hidden = false;
+    renderAll();
+    menu.hidden = true;
 });
 
 // crypto.randomUUID()が使えなかった代替
@@ -118,3 +154,15 @@ function createId(){
 window.addEventListener("click",()=>{
     menu.hidden = true;
 })
+
+function updateOrder(){
+    const divList = Array.from(document.querySelectorAll(".container .todo-item"));
+    divList.forEach((div, i) =>{
+        const item = todoList.find(list => list.id === div.dataset.id);
+        item.order = i+1;
+        console.log(item);
+    });
+    save();
+}
+// 表示する
+renderAll();
